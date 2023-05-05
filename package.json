@@ -1,0 +1,23 @@
+{
+  "name": "explainnodejs",
+  "version": "1.0.0",
+  "description": "1. # Introduction to Nodejs     - What is Nodejs?     - History and evolution of Nodejs",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pvm-77/explainNodeJS.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/pvm-77/explainNodeJS/issues"
+  },
+  "homepage": "https://github.com/pvm-77/explainNodeJS#readme",
+  "devDependencies": {
+    "nodemon": "^2.0.22"
+  }
+}
