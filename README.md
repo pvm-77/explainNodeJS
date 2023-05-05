@@ -148,3 +148,84 @@ The ECMAScript specification defines a callback function as follows:
 
 Callback functions are commonly used in asynchronous programming, where they allow for non-blocking execution of code. By providing a callback function, the calling function can continue to execute while the asynchronous operation is being performed, and then call the callback function when the operation is complete. This can help to improve the performance and responsiveness of applications that rely on asynchronous operations.
 ```
+
+
+# Basic Nodejs concepts 
+
+##  Asynchornous programming 
+##  Event-driven architecture
+##  Callbacks and error handling
+
+##  Modules and packages
+
+###  `Module`
+
+A module is just a file one script is one module
+
+we can use module using  directive `import` and `export` 
+Export and import directives have several syntax variants.
+
+1. `export` before declarations
+2. `export` apart from declarations
+   
+3. `import as` and `export as`
+we can use import/export as under different name 
+
+```js
+// 📁 index.js
+import {printInfo as info,printError as error} from './utils.js';
+info('hi your information has been recieve');
+error('hi your error has been detected');
+
+```
+
+```js
+// 📁 utils.js
+const info=(param)=>{
+    console.log(param);
+}
+const error=(param)=>{
+    console.error(param);
+}
+export {info as printInfo,error as printError}
+
+```
+>in `utils.js`, there are two functions `info` and `error` that log messages to the console. The `export` statement at the bottom of the file exports these functions as `printInfo` and `printError`, respectively, using the as keyword to rename the functions during the export.
+
+In `index.js`, the `import` statement is used to import the `printInfo` and `printError` functions from `utils.js`. The `as` keyword is used again to rename the functions during the import, so that they can be accessed using the `info` and `error` identifiers in `index.js`.
+
+Then, the `info` and `error` functions are called with some messages to log to the console. These messages are passed as arguments to the functions and are printed to the console using the `console.log` and `console.error` functions.
+
+4. `export default`
+
+```js
+// 📁 index.js
+import logger from './utils.js';
+logger.info('hi your information has been recieve');
+loggererror('hi your error has been detected');
+
+```
+
+```js
+// 📁 utils.js
+const info=(param)=>{
+    console.log(param);
+}
+const error=(param)=>{
+    console.error(param);
+}
+export default {info ,error }
+
+```
+
+>The export default statement is used to export a single object, function or primitive as the default export of the module. The default export can be imported using any name in the importing module, and the default keyword is used to access the exported value.
+
+In utils.js, the export default statement exports an object containing two functions, info and error. This means that when this module is imported in another module, the default export will be an object containing these two functions.
+
+In index.js, the import statement is used to import the default export from utils.js as an object called logger. This object contains the info and error functions, which can be accessed using dot notation (logger.info and logger.error).
+
+Overall, the use of export default allows us to export a single value as the default export of a module. This can be useful when we want to export a single object or function as the primary export of a module.
+<!-- report to done  -->
+**NOTE** there can be only 1 export default per file
+##  Built-in modules and external modules
+##  NPM (Node Package Manager)
