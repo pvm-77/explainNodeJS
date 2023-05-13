@@ -30,14 +30,22 @@
 //     }
 //   }
 
-
-const info=(...params)=>{
+import {middlewareFunction} from './middleware.js'
+export  const info=(...params)=>{
     console.log(...params);
 }
 
-const error=(...params)=>{
-    console.log(...params);
+export const errorLog=(params)=>{
+    console.log(params);
+}
+const warn=(...params)=>{
+    console.warn(params);
+}
+export const _privateVariable='hi mai private bhyya';
+
+export function loggerFunction(){
+    console.log('logger function');
+    middlewareFunction()
 }
 
-
-export default {info,error }
+// export default info

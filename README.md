@@ -9,7 +9,7 @@
     - Callbacks and error handling
     - Modules and packages
     - Built-in modules and external modules
-    - NPM (Node Package Manager)
+    -  Package Manager in nodejs  [NPM (Node Package Manager) && yarn]
 
 3. # Core modules in Nodejs
     - `htttp` module
@@ -160,7 +160,285 @@ Callback functions are commonly used in asynchronous programming, where they all
 
 ###  `Module`
 
-A module is just a file one script is one module
+- A module is just a file `one script is one module`.
+- A module in Node.js is a single file or a group of related files that export a set of functions or variables for use in other parts of an application.
+- Modules are typically small, focused units of code that serve a specific purpose.
+- Module can be used to encapsulate and reuse functionality, improving code organization and maintainability.
+
+**definition2**
+a module is a self-contained unit of code that encapsulates a set of related functions, classes, and variables. Modules help you organize your code into reusable units, making it easier to maintain and scale your applications.
+
+**example**
+```js
+//📁 utils.js
+function info(params){
+    console.log(params);
+}
+function error(params){
+    console.error(params);
+}
+```
+```js
+export default {info,error}
+//📁 app.js
+import logger from '.utils.js'
+logger.info('i am custom logger');
+```
+>in this example `utils.js` is a `module` that exports two functions `info` and `error`.These functions can be used in other parts of the application by importing the `module utils.js`.
+
+
+#### types of modules
+1. `built-in modules`
+2. `external modules`
+3. `user defined modules`
+
+#### How  to  create module?
+
+in javascript the `import` and `export` statements are used to facilitate module management and code reuse.
+
+ways to use `export` and `import` in nodejs 
+
+#### EXPORT
+the export statement is use to export function ,object or variable from a module so that it can be used in other modules.There are two types of export in javascript(here nodejs) `named export ` and  `default export`  
+
+#### Default export
+
+- default export allow only one value per module this value can be function ,object or variable/primitive value.
+- to create a default export we can use `export default` statement followed by the value we want to export
+
+```js
+// utils.js
+const info=(params)=>{
+    console.log(params);
+}
+export default info
+
+```
+```js
+// app.js
+import info from './utils.js'
+info('hi all')
+
+```
+####  Named export 
+
+named export allow us to export multiple values from a module. we can export functions,object or variables by using the `export` statement followed by the name of the value we want to export 
+```js
+// utils.js
+export const add = (a, b) => a + b;
+export const subtract = (a, b) => a - b;
+
+// app.js
+import { add, subtract } from './utils.js';
+console.log(add(2, 3)); // Output: 5
+console.log(subtract(3, 2)); // Output: 1
+```
+
+####  import 
+The import statement is used to import a function, object, or variable from another module. We can use the import statement followed by the name of the module we want to import from and the name of the value we want to import.
+```js
+
+// utils.js
+export const add = (a, b) => a + b;
+
+// app.js
+import { add } from './utils.js';
+console.log(add(2, 3)); // Output: 5
+```
+We can also use the import * as statement to import all the exports of a module into a namespace.
+```js
+// utils.js
+export const add = (a, b) => a + b;
+export const subtract = (a, b) => a - b;
+
+// app.js
+import * as utils from './utils.js';
+console.log(utils.add(2, 3)); // Output: 5
+console.log(utils.subtract(3, 2)); // Output: 1
+```     
+
+**NOTE**: However, there are certain types of functionality that we cannot import from other files/modules directly, such as:
+
+Variables: We cannot import a variable directly from another module, as variables are not exported by default. Instead, we can export them as named exports or use a function to retrieve them.
+```js
+// module.js
+const myVariable = 'Hello, world!';
+export { myVariable };
+
+// main.js
+import { myVariable } from './module.js';
+console.log(myVariable); // "Hello, world!"
+
+```
+Private members: We cannot import private members of a module, as they are not exposed for use outside of the module. Private members are usually denoted with a leading underscore (_) to indicate that they are intended for internal use only.
+```js
+// module.js
+const _myPrivateVariable = 'This is private!';
+export function myFunction() {
+  console.log(_myPrivateVariable);
+}
+
+// main.js
+import { myFunction } from './module.js';
+myFunction(); // "This is private!"
+```
+Circular dependencies: We should be careful when importing modules that have circular dependencies (i.e., when two or more modules depend on each other). This can lead to infinite loops and cause errors in our code. To avoid this, we can refactor our code to remove the circular dependency or use a workaround such as lazy loading or dependency injection.
+```js
+// moduleA.js
+import { myFunctionB } from './moduleB.js';
+export function myFunctionA() {
+  console.log('This is function A!');
+  myFunctionB();
+}
+
+// moduleB.js
+import { myFunctionA } from './moduleA.js';
+export function myFunctionB() {
+  console.log('This is function B!');
+  myFunctionA();
+}
+
+// main.js
+import { myFunctionA } from './moduleA.js';
+myFunctionA(); // This will cause an error due to circular dependencies.
+
+```
+### some rules for export and import 
+Exporting variables or members that are not defined in the current module scope: When we try to export a variable or member that is not defined in the current module scope, we will get a ReferenceError at runtime.
+
+Importing variables or members that are not exported by the target module: When we try to import a variable or member that is not exported by the target module, we will get a TypeError at runtime.
+
+Importing or exporting circular dependencies: When two or more modules have circular dependencies, it can lead to issues with importing and exporting, as shown in the example above.
+
+Exporting or importing certain built-in JavaScript objects: Some built-in objects in JavaScript cannot be exported or imported, such as Math, JSON, and Date.
+
+Exporting or importing from certain non-JavaScript file types: While JavaScript supports importing and exporting from a wide range of file types, such as .js, .json, and .mjs, some file types, such as .txt or .html, cannot be imported or exported.
+
+Importing or exporting from modules that are not properly configured: In some cases, importing or exporting may not work due to issues with module configuration or other external factors.
+
+
+
+#### benfit of modules
+the benefits of using modules in javascript are
+1. `CODE ORGANIZATION`:modules allow you to break your code into smaller,more manageable pieces,which can be easier to read,test and maintain.
+2. `REUSABILITY`:Modules can be reused across multiple parts of your application or in multiple applicatios,making it easier to share code and reduce duplication.
+3. `ENCAPSULATION`:module provide a way to encapsulate the implementation details of your code,hiding them from other parts of your application and preventing unintended side effects.
+4. `DEPENDENCY MANAGEMENT`:modules can specify their dependencies on other modules,making it easiser to manage the dependencies between diffrent parts of your application.
+5. `Modularity`: modules allows us to split our code into separate modules, each with its own set of responsibilities. This makes our code easier to maintain, test, and reuse.
+```js
+// 📁 util.js
+export const info=(...params)=>{
+    console.log(...params);
+}
+
+export const error=(...params)=>{
+    console.log(...params);
+}
+const warn=(...params)=>{
+    console.warn(params);
+}
+
+```
+```js
+// 📁 app.js
+import { info } from './utils/logger.js';
+info('print hello');
+```
+>In this example, we have two separate modules - `utils.js` and `app.js`. `utils.js` exports a single function `info`, which takes single parameter and print it. `app.js` imports the `info` function from `utils.js` and uses it to print passed parameter. This is an example of how module can be used to create modular, reusable code.
+
+
+6. `Static analysis`: modules allows for static analysis of the code, which can help to catch errors early in the development process and improve code quality.
+
+
+### packages
+
+- A package in nodejs is a collection of modules,along with other resources such as configuration files,documentation, and dependencies.
+- Packages can be installed and managed using Node Package Manager(npm).
+- Packages are typically larger units of code that provide more complex functionality than individual modules.
+
+<!-- example still to write -->
+
+## Built-in module and External modules
+
+nodejs has a rich built-in modules that provide a wide range of functionality for developing applications.
+
+some  most common built-in modules in nodejs
+
+1. `fs`:: A module for interacting with the file system, including reading and writing files, creating and deleting directories, and more.
+2. `http`:A module for building HTTP servers and clients.
+3. `https`:A module for building HTTPS servers and clients.
+4. `path`:a module working with file paths and directory paths
+5. `crypto`:a module for cryptographic functions such as hashing and encryption
+6. `os`:a module for working with operating system,including getting info about cpu ,memory,and network interfaces
+7. `util`:a module that provides various utility functions,such as formatting strings,debugging,and timing functions
+8. `events`:a module for building and handling events
+9. `stream`:a  module for working with stream of data,such as reading and writing large files or working with network sockets
+10. `process`:a module for working with the current Nodejs process, including getting and setting environment variables ,accessing command line arguments and more.
+
+
+some most common external modules
+
+1. `request`: A library for making HTTP requests from Node.js applications.
+
+2. `chalk`: A library for styling console output with colors and styles.
+
+3. `debug`: A utility library for debugging Node.js applications, providing a simple API for logging and debugging.
+
+4. `winston`: A logging library for Node.js, providing support for multiple transports and log levels.
+
+5. `jsonwebtoken`: A library for working with JSON Web Tokens, providing functions for signing and verifying tokens.
+
+6. `joi`: A library for validating and sanitizing data in Node.js applications, providing a simple and powerful API for defining schemas and validating data.
+
+7. `nodemon`: A utility library that monitors changes in your Node.js application and automatically restarts the server.
+
+8. `uuid`: A library for generating unique identifiers in Node.js applications.
+
+9. `moment-timezone`: A library for working with dates and times in different time zones, extending the moment library.
+
+10. `aws-sdk`: A library for interacting with Amazon Web Services (AWS) APIs from Node.js applications.
+
+### external modules
+
+- in nodejs an external module refers to a Javascript module that is not built into the nodejs runtime environment but instead provided by a separate third party package or library.
+- externla modules can be install using npm or ther package manager and can be used to extend the functionality of a nodejs application beyond what is provided by the built in nodejs modules.
+- external modules can be used to perform a wide range of tasks such as making http requests interacting with databases handling user authentication and more example-axios,expressand Sequelize
+- external modules are typically distributed as packages,which contain the module code as well as necessary dependencies and configuration information.when an external module is installed using npm ,the package and its dependencies are downloaded and stored int `node_modules` directory of the project/application
+
+**NOTE**
+in nodejs an external module can be provides in diffrent forms but in practice most external modules are packaged and distributed as npm packages.however,its important to note that not all external modules are necessarily packages and there are some exceptions.
+
+for example an external module can be provided as a single javascript file that is downloaded and included in your nodejs application using a script tag or it can be provided as a collection of js files that you manually include in your application
+
+
+However, in practice, most external modules are distributed as packages because they often have dependencies and require complex installation procedures that are difficult to manage manually. By packaging modules as npm packages, developers can easily manage and install dependencies, and the packages can be versioned and updated as needed. Additionally, packaging modules as npm packages allows them to be shared and reused across multiple projects.
+
+
+One example of an external module that is not necessarily a package is the dotenv module. This module allows you to load environment variables from a file into your Node.js application, making it easy to manage configuration settings. The dotenv module is typically installed as a package using npm, but it can also be provided as a standalone JavaScript file that you manually include in your application.
+
+To use the dotenv module as a standalone JavaScript file, you would simply download the file from the official repository and include it in your application using a script tag. This approach is less common than using the dotenv package, but it can be useful in situations where you cannot or do not want to use npm to install packages.
+
+Another example of an external module that is not necessarily a package is the ws module, which is used for WebSocket communication in Node.js. The ws module is typically installed as a package using npm, but it can also be provided as a standalone JavaScript file that you manually include in your application.
+
+Again, while these examples are not typical, they illustrate that external modules can take different forms and do not necessarily need to be provided as packages.
+
+ Note that when using the dotenv module as a standalone file, you will not be able to take advantage of the full range of features provided by the npm package, such as automatic loading of environment variables or support for different file formats.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 we can use module using  directive `import` and `export` 
 Export and import directives have several syntax variants.
@@ -227,5 +505,86 @@ In index.js, the import statement is used to import the default export from util
 Overall, the use of export default allows us to export a single value as the default export of a module. This can be useful when we want to export a single object or function as the primary export of a module.
 <!-- report to done  -->
 **NOTE** there can be only 1 export default per file
+
+
+## differen types of module system 
+
+There are several module systems in JavaScript, each with its own syntax and usage. Here are some of the most popular module systems:
+
+1. CommonJS: CommonJS is a module system used primarily in Node.js. It uses the `require()` function to import modules and the `module.exports` object to export modules.
+2. AMD (Asynchronous Module Definition): AMD is a module system designed for use in the browser. It uses the `define()` function to define modules and the `require()` function to import modules.
+3. ES6 modules: ES6 modules are the standard module system in modern JavaScript. They use the `import` keyword to import modules and the `export` keyword to export modules.
+
+4. UMD (Universal Module Definition): UMD is a module system that works in both the browser and Node.js. It uses a combination of CommonJS and AMD syntax to define and import modules.
+
+5. SystemJS: SystemJS is a module system that supports multiple module formats, including AMD, CommonJS, and ES6 modules. It allows developers to write code in any module format and then load and use the modules in any environment.
+
+6. Rollup: Rollup is a module bundler that takes ES6 modules as input and generates a single bundle that can be used in the browser. It can also generate CommonJS, AMD, and UMD modules.
+
+The ES6 module system, which uses the import and export keywords, is the most widely used module system in modern JavaScript development. This is because it is the standard module system defined in the ECMAScript specification, and is supported by all modern browsers and Node.js versions.
+
+Some of the benefits of using ES6 modules include:
+
+Declarative syntax: ES6 modules provide a simple and declarative syntax for defining and exporting modules, which makes it easy to understand and use.
+
+Tree-shaking: ES6 modules support tree-shaking, which is a technique used to eliminate unused code from the final bundle. This can significantly reduce the bundle size and improve performance.
+
+Static analysis: ES6 modules are statically analyzable, which means that the module dependencies can be determined at compile-time. This can improve performance and reduce runtime errors.
+
+Encapsulation: ES6 modules provide encapsulation by default, which means that the module scope is isolated from the global scope. This can help prevent naming collisions and improve code maintainability.
+
+Because of these benefits, ES6 modules are widely adopted by modern JavaScript developers and are often the preferred module system for new projects. However, it is important to note that some legacy code and environments may still rely on other module systems, such as CommonJS or AMD.
+
+
 ##  Built-in modules and external modules
-##  NPM (Node Package Manager)
+
+## Package Manager for Nodejs
+
+In Node.js, a package manager is a tool that helps developers to manage dependencies and packages in their Node.js projects. It allows developers to easily install, update, and remove packages and their dependencies, ensuring that their projects have all the necessary dependencies to run smoothly.
+
+There are two main package managers in Node.js: npm and Yarn.
+
+1. `npm (Node Package Manager)` 
+npm is the default package manager that comes bundled with Node.js. It allows developers to install, manage, and share packages from the npm registry, which is a centralized repository of Node.js packages. Developers can use npm to install packages locally or globally, update packages, and uninstall packages.
+
+2. `Yarn`
+Yarn is an alternative package manager that was developed by Facebook. It was designed to address some of the limitations of npm, such as slow install times and inconsistent dependency resolutions. Yarn uses a lockfile to ensure that packages are installed consistently across different environments, and it has a caching mechanism that speeds up the installation process.
+
+Both npm and Yarn use a package.json file to manage dependencies and metadata for Node.js projects. This file contains information about the project, such as the project name, version, and dependencies. Developers can use this file to specify the dependencies and their versions, and the package manager will ensure that all dependencies are installed and up to date.
+
+
+### Strengths of npm:
+
+1. `Bundled with Node.js`: npm is the default package manager that comes bundled with Node.js, which means that developers don't need to install any additional software to use it.
+
+2. `Large package repository`: npm has a huge repository of packages, with over 1.5 million packages available for developers to use.
+
+3. `Familiarity`: npm has been around for a long time and is widely used, which means that many developers are already familiar with it.
+
+
+### Strengths of Yarn:
+
+1. `Faster install times`: Yarn uses a caching mechanism that makes installation faster than npm, especially for large projects.
+
+2. `Consistent installations`: Yarn uses a lockfile to ensure that all dependencies are installed consistently across different environments, which can prevent issues that sometimes occur with npm.
+
+3. `Improved security`: Yarn has a built-in mechanism for verifying package integrity, which can help prevent security vulnerabilities.
+
+
+
+CommonJS and ES Modules (ESM) are two different systems used for organizing and sharing code in JavaScript.
+
+CommonJS is a module system used in Node.js, designed to work with synchronous code. In CommonJS, modules are loaded synchronously, which means that the code waits for each module to load before moving on to the next one. CommonJS uses the require() function to load modules, and the module.exports object to export them.
+
+ES Modules (ESM) are a module system introduced in ECMAScript 6 (ES6), designed to work with both synchronous and asynchronous code. In ESM, modules are loaded asynchronously, which means that the code doesn't wait for each module to load before moving on to the next one. ESM uses the import and export keywords to load and export modules.
+
+Some key differences between CommonJS and ES Modules include:
+Syntax: CommonJS uses require() and module.exports, while ES Modules use import and export.
+
+Asynchronous loading: ES Modules support asynchronous loading of modules, whereas CommonJS only supports synchronous loading.
+
+Static analysis: ES Modules allow for static analysis of the module graph, which can help with tree shaking (removing unused code) and other optimizations. CommonJS does not support static analysis.
+
+Browser support: ES Modules are supported in modern web browsers, while CommonJS is primarily used in Node.js.
+
+Overall, ES Modules offer a more modern, flexible, and powerful way of working with modules in JavaScript, especially for large-scale projects. However, CommonJS is still widely used, particularly in Node.js environments.

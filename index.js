@@ -38,12 +38,12 @@
 
 
 import http from 'http';
-import config from './utils/config.mjs';
-import app from './app.mjs';
-import logger from './utils/logger.mjs';
+import config from './utils/config.js';
+import app from './app.js';
+import {info} from './utils/logger.js';
 const server=http.createServer(app);
 server.listen(config.PORT,()=>{
-    logger.info(`server is running on port ${config.PORT}`);
+    info(`server is running on port ${config.PORT}`);
 })
 
 
